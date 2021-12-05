@@ -1,6 +1,8 @@
 package be.syntra;
 
+import be.syntra.common.AppConfig;
 import be.syntra.cowsay.*;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Scanner;
 
@@ -13,9 +15,10 @@ public class App {
      * concrete dependencies to objects
      */
 
-    CowSay cowSay = new DragonCowSay();
-    QuoteDao quoteDao = new QuoteDaoMysql();
-    cowSay.setQuoteDao(quoteDao);
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+    CowSay cowSay = (CowSay) context.getBean("cowSay");
+
+
     cowSay.showQuote();
 
     Scanner in = new Scanner(System.in);
@@ -32,5 +35,6 @@ public class App {
         System.out.println("Please enter y/n");
       }
     }
+    context.close();
   }
 }
